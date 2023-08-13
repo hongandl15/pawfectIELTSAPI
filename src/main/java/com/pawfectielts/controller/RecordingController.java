@@ -5,13 +5,11 @@ import com.pawfectielts.entity.Recording;
 import com.pawfectielts.service.impl.QuestionServiceImplement;
 import com.pawfectielts.service.impl.RecordingServiceImplement;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/recording")
 public class RecordingController {
     private final RecordingServiceImplement recordingServiceImplement;
