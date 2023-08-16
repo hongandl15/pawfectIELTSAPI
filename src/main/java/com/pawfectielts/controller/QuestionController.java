@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping("/question")
 public class QuestionController {
 
@@ -23,9 +23,9 @@ public class QuestionController {
     public QuestionController(QuestionServiceImplement questionServiceImplement) {
         this.questionServiceImplement = questionServiceImplement;
     }
-    @GetMapping("/get/{id}")
-    public ResponseEntity<List<QuestionDTO>> getAllQuestion(@PathVariable Long id) {
-        List<QuestionDTO> response = questionServiceImplement.getListQuestion(id);
+    @GetMapping("/get/{partid}")
+    public ResponseEntity<List<QuestionDTO>> getAllQuestionByParti(@PathVariable Long partid) {
+        List<QuestionDTO> response = questionServiceImplement.getListQuestion(partid);
         return ResponseEntity.ok().body(response);
     }
 }

@@ -3,7 +3,7 @@ import  jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-
+import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
@@ -21,7 +21,10 @@ public class TestResult {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private int score;
+    private double score;
+    private int rightAnswer;
+    private int wrongAnswer;
+    private int skipAnswer;
 
     @ManyToOne
     @JoinColumn(name = "test_id")
@@ -30,5 +33,4 @@ public class TestResult {
     @Temporal(TemporalType.TIMESTAMP)
     private Date create_at;
 
-    // Getters and setters
 }

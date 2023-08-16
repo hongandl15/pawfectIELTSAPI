@@ -12,4 +12,5 @@ import java.util.List;
 public interface PartRepository extends JpaRepository<Part, Long> {
 //    @Query("SELECT p FROM Part p WHERE p.testDetail.id = :testDetailId")
     List<Part> findByTestDetailId(Long testDetailId);
+
 }

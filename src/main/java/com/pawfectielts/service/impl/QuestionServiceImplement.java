@@ -27,13 +27,10 @@ public class QuestionServiceImplement implements QuestionService {
 
     @Autowired
     private ModelMapper modelMapper;
-
     @Autowired
     private QuestionRepository questionRepository;
-
     @Autowired
     private QuestionDetailRepository questionDetailRepository;
-
     @Autowired
     private QuestionDetailChildRepository questionDetailChildRepository;
 
@@ -87,6 +84,7 @@ public class QuestionServiceImplement implements QuestionService {
     public QuestionDTO convertEntityToDTO(Long questionId) {
         QuestionDTO response = new QuestionDTO();
         Optional<Question> question = questionRepository.findById(questionId);
+        response.setId(question.get().getId());
         response.setOrder(question.get().getOrder());
         response.setTitle(question.get().getTitle());
         response.setQuestionDetails(getQuestionDetailDTOsByQuestionId(questionId));

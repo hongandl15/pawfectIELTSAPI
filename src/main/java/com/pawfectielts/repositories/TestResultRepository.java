@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TestResultRepository extends JpaRepository<TestResult, Long> {
-
+    TestResult findByTestId(Long testID);
 }

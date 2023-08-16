@@ -13,13 +13,9 @@ import java.util.List;
 public interface QuestionService {
 
      List<QuestionDetailDTO> getQuestionDetailDTOsByQuestionId(Long questionId);
-
-
      QuestionDTO convertEntityToDTO(Long questionId);
-
      List<QuestionDetailChildDTO> getQuestionDetailChildDTOsByQuestionId(Long questionId);
      List<QuestionDTO> getListQuestion(Long partID);
-
      QuestionType getQuestionType(Long questionId);
 }
 

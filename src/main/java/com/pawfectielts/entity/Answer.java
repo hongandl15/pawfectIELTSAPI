@@ -5,9 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "answer")
 @Getter
 @Setter
+@Table(name = "answer")
 public class Answer {
 
     @Id
@@ -18,6 +18,9 @@ public class Answer {
     @ManyToOne
     @JoinColumn(name = "test_id")
     private Test test;
+
+    @Column(name = "answer_order")
+    private int order;
 
     private String correctAnswer;
 

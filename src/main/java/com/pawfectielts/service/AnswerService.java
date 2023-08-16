@@ -7,7 +7,5 @@ import com.pawfectielts.entity.TestResult;
 import java.util.List;
 
 public interface AnswerService {
-
     List<Answer> findAllAnswerByTestId(Long TestID);
-    TestResult checkResult(AnswerDTO answerDTO);
 }
