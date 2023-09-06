@@ -48,7 +48,8 @@ public class TestResultImplement implements TestResultService {
         Test currentTest = testRepository.findById(testId).orElse(null);
         int numberOfCorrect = 0;
         int numberOfSkip = 0;
-        for (int i = 0; i <= 39; i++) {
+        List<Answer> listanswer= answerServiceImplement.findAllAnswerByTestId(testId);
+        for (int i = 0; i < listanswer.size(); i++) {
             UserAnswer userAnswer = new UserAnswer();
             userAnswer.setAnswer(answerDTO.getAnswer().get(i).toUpperCase().trim());
             if(correctAnswer.get(i).getCorrectAnswer() != null ){
@@ -73,7 +74,7 @@ public class TestResultImplement implements TestResultService {
         testResult.setTest(currentTest);
         testResult.setScore(ScoreTest(numberOfCorrect));
         testResult.setRightAnswer(numberOfCorrect);
-        testResult.setWrongAnswer(40-numberOfCorrect-numberOfSkip);
+        testResult.setWrongAnswer(listanswer.size()-numberOfCorrect-numberOfSkip);
         testResult.setSkipAnswer(numberOfSkip);
         testResult.setUser(user);
         testResult.setCreate(new Date());

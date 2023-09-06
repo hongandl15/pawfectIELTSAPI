@@ -9,4 +9,5 @@ import java.util.ArrayList;
 @Setter
 public class AnswerDTO {
     private ArrayList<String> answer;
+    private ArrayList<String> topic;
 }

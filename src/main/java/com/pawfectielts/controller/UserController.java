@@ -5,6 +5,7 @@ import com.pawfectielts.entity.User;
 import com.pawfectielts.repositories.UserRepository;
 import com.pawfectielts.service.impl.UserServiceImplement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,10 @@ public class UserController {
     private BCryptPasswordEncoder passwordEncoder;
 
     @PostMapping("/register")
-    public String registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        if (userRepository.existsByEmail(user.getEmail()) || userRepository.existsByUsername(user.getUsername())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Email or username is already in use.");
+        }
         // Set the creation date
         user.setCreate_at(new Date());
         user.setRole("USER");
@@ -37,9 +41,9 @@ public class UserController {
         User savedUser = userServiceImplement.register(user);
 
         if (savedUser != null) {
-            return "User registered successfully!";
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
         } else {
-            return "User registration failed.";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User registration failed.");
         }
     }
 

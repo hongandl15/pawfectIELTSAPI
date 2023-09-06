@@ -44,12 +44,11 @@ public class TestResultController {
     }
 
     @PostMapping("/getpassagescore/{testid}")
-    public ResponseEntity<TestResult> getPassageScore(@RequestBody AnswerDTO answerDTO, @RequestParam String topicInput, @PathVariable Long testid, @RequestParam Long userId) {
+    public ResponseEntity<TestResult> getPassageScore(@RequestBody AnswerDTO answerDTO, @PathVariable Long testid, @RequestParam Long userId) {
         AnswerDTO newAnswer = new AnswerDTO();
         ArrayList arrayList = new ArrayList<>();
-        for (String answer: answerDTO.getAnswer())
-        {
-            String messageContent = "Score my this ielts passage with 4 criteria Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range and Accuracy by number on 9.0 ielts score scale and show ielts overall for this topic: " + topicInput + " my answer is: " + answer;
+        for (int i = 0; i < answerDTO.getTopic().size(); i++) {
+            String messageContent = "Score my this ielts passage with 4 criteria Task Response, Coherence & Cohesion, Lexical Resource, Grammatical Range and Accuracy by number on 9.0 ielts score scale and show ielts overall for this topic: " + answerDTO.getTopic().get(i) + " my answer is: " + answerDTO.getAnswer().get(i);
             arrayList.add(messageContent);
         }
         newAnswer.setAnswer(arrayList);

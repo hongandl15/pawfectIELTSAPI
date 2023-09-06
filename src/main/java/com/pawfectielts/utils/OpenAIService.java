@@ -31,6 +31,7 @@ public class OpenAIService {
     private final String BASE_URL = "https://api.openai.com/v1/chat/completions";
 
     @Value("${API_KEY}")
+    @Autowired
     private String API_KEY; // Replace with your actual OpenAI API key
     private RestTemplate restTemplate;
 
