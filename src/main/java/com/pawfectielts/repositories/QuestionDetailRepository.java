@@ -9,4 +9,8 @@ import java.util.List;
 @Repository
 public interface QuestionDetailRepository extends JpaRepository<QuestionDetail, Long> {
     List<QuestionDetail> findByQuestionId(Long questionId);
+
+    void deleteByQuestion_Id(Long questionId);
+
+
 }

@@ -20,13 +20,11 @@ public class UserAnswer {
     private int orderNumber;
     private boolean correct;
     private String answer;
+    private String correctAnswer;
     @ManyToOne
     @JoinColumn(name = "testResult_id")
     private TestResult testResult;
 
-    @ManyToOne
-    @JoinColumn(name = "users_id")
-    private User user;
 
     // Getters and setters
 }

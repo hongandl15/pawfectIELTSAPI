@@ -14,12 +14,14 @@ public class QuestionDetail {
     @Column(name = "questionDetail_id")
     private Long id;
 
+    @Column(name = "questionDetail_order")
     private int order;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "question_id")
     private Question question;
 
+    @Column(name = "name", length = 25000)
     private String name;
 
     // Getters and setters

@@ -24,7 +24,7 @@ public class QuestionController {
         this.questionServiceImplement = questionServiceImplement;
     }
     @GetMapping("/get/{partid}")
-    public ResponseEntity<List<QuestionDTO>> getAllQuestionByParti(@PathVariable Long partid) {
+    public ResponseEntity<List<QuestionDTO>> getAllQuestionByPartId(@PathVariable Long partid) {
         List<QuestionDTO> response = questionServiceImplement.getListQuestion(partid);
         return ResponseEntity.ok().body(response);
     }

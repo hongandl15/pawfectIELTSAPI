@@ -1,6 +1,7 @@
 package com.pawfectielts.controller;
 
 
+import com.pawfectielts.dto.AdminDTO.PartDTO;
 import com.pawfectielts.entity.Part;
 import com.pawfectielts.service.PartService;
 import com.pawfectielts.service.impl.PartServiceImplement;
@@ -15,16 +16,14 @@ import java.util.Map;
 //@CrossOrigin(origins = "*")
 @RequestMapping("/part")
 public class PartController {
-
-
     private final PartServiceImplement partServiceImp;
 
     public PartController(PartServiceImplement partServiceImp) {
         this.partServiceImp = partServiceImp;
     }
     @GetMapping("/get/{testid}")
-    public ResponseEntity<List<Part>> getPartContent(@PathVariable Long testid) {
-        List<Part> response = partServiceImp.findPartByTestDetailId(testid);
+    public ResponseEntity<List<PartDTO>> getPartContent(@PathVariable Long testid) {
+        List<PartDTO> response = partServiceImp.convertToDTO(testid);
         return ResponseEntity.ok().body(response);
     }
 

@@ -1,20 +1,24 @@
 package com.pawfectielts.service.impl;
 
 import com.pawfectielts.dto.AnswerDTO;
+import com.pawfectielts.dto.QuestionDetailChildDTO;
 import com.pawfectielts.dto.UserAnswerDTO;
 import com.pawfectielts.entity.*;
-import com.pawfectielts.entity.TestResultDTO;
+import com.pawfectielts.dto.TestResultDTO;
 import com.pawfectielts.repositories.AnswerRepository;
 import com.pawfectielts.repositories.TestRepository;
 import com.pawfectielts.repositories.TestResultRepository;
 import com.pawfectielts.repositories.UserAnswerRepository;
 import com.pawfectielts.service.TestResultService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TestResultImplement implements TestResultService {
@@ -26,12 +30,18 @@ public class TestResultImplement implements TestResultService {
     private TestResultRepository testResultRepository;
     @Autowired
     private UserAnswerRepository userAnswerRepository;
-
     @Autowired
     private AnswerServiceImplement answerServiceImplement;
 
+    @Autowired
+    private UserServiceImplement userServiceImplement;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
-    public TestResult checkResult(Long testId, AnswerDTO answerDTO) {
+    public TestResult checkResult(Long testId, AnswerDTO answerDTO, Long userId) {
+        User user = userServiceImplement.getUserById(userId);
         List<Answer> correctAnswer = answerServiceImplement.findAllAnswerByTestId(testId);
         TestResult testResult = new TestResult();
         Long testResultId = testResultRepository.save(testResult).getId();
@@ -41,8 +51,15 @@ public class TestResultImplement implements TestResultService {
         for (int i = 0; i <= 39; i++) {
             UserAnswer userAnswer = new UserAnswer();
             userAnswer.setAnswer(answerDTO.getAnswer().get(i).toUpperCase().trim());
+            if(correctAnswer.get(i).getCorrectAnswer() != null ){
+                userAnswer.setCorrectAnswer(correctAnswer.get(i).getCorrectAnswer().toUpperCase());
+            }
+            else{
+                userAnswer.setCorrectAnswer("");
+            }
+
             userAnswer.setOrderNumber(i+1);
-            if (answerDTO.getAnswer().get(i).toUpperCase().trim().equals(correctAnswer.get(i).getCorrectAnswer().toUpperCase())){
+            if (userAnswer.getAnswer().equals(userAnswer.getCorrectAnswer())){
                 numberOfCorrect += 1;
                 userAnswer.setCorrect(true);
             }
@@ -58,6 +75,9 @@ public class TestResultImplement implements TestResultService {
         testResult.setRightAnswer(numberOfCorrect);
         testResult.setWrongAnswer(40-numberOfCorrect-numberOfSkip);
         testResult.setSkipAnswer(numberOfSkip);
+        testResult.setUser(user);
+        testResult.setCreate(new Date());
+
         testResultRepository.save(testResult);
         return testResult;
     }
@@ -71,7 +91,7 @@ public class TestResultImplement implements TestResultService {
     @Override
     public TestResultDTO getTestResultDTO(Long testResultId){
         TestResult testResult = getTestResultByID(testResultId);
-        ArrayList<UserAnswerDTO> userAnswerDTOArrayList = getAllUserAnswerByTestResult(testResult.getId());
+        ArrayList<UserAnswerDTO> userAnswerDTOArrayList = getAllUserAnswerByTestResult(testResultId);
         TestResultDTO testResultDTO = new TestResultDTO();
         testResultDTO.setRightAnswer(testResult.getRightAnswer());
         testResultDTO.setWrongAnswer(testResult.getWrongAnswer());
@@ -100,12 +120,35 @@ public class TestResultImplement implements TestResultService {
         response.setAnswer(userAnswer.get().getAnswer());
         response.setOrderNumber(userAnswer.get().getOrderNumber());
         response.setCorrect(userAnswer.get().isCorrect());
+        response.setCorrectAnswer(userAnswer.get().getCorrectAnswer());
         return response;
     }
 
     @Override
     public TestResult getTestResultByID(Long testResultId) {
         return testResultRepository.findById(testResultId).orElse(null);
+    }
+
+    public List<TestResultDTO> findAllByUserId(Long userId){
+        List<TestResult> testResultList =  testResultRepository.findAllByUser_IdOrderByCreateDesc(userId);
+        List<TestResultDTO> testResultDTOS = new ArrayList<>();
+        for (TestResult testResult: testResultList) {
+            TestResultDTO testResultDTO = new TestResultDTO();
+            ArrayList<UserAnswerDTO> userAnswerDTOArrayList = getAllUserAnswerByTestResult(testResult.getId());
+
+            testResultDTO.setRightAnswer(testResult.getRightAnswer());
+            testResultDTO.setWrongAnswer(testResult.getWrongAnswer());
+            testResultDTO.setSkipAnswer(testResult.getSkipAnswer());
+            testResultDTO.setScore(testResult.getScore());
+            testResultDTO.setUserAnswers(userAnswerDTOArrayList);
+            testResultDTO.setTestid(testResult.getTest().getId());
+            testResultDTO.setUserid(testResult.getUser().getId());
+            testResultDTO.setId(testResult.getId());
+            testResultDTO.setTestName(testResult.getTest().getName());
+            testResultDTO.setCreate_at(testResult.getCreate().toString());
+            testResultDTOS.add(testResultDTO);
+        }
+        return testResultDTOS;
     }
     @Override
     public double ScoreTest(int numberOfCorrect){

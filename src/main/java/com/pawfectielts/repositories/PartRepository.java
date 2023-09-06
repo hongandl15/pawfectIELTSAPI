@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface PartRepository extends JpaRepository<Part, Long> {
-//    @Query("SELECT p FROM Part p WHERE p.testDetail.id = :testDetailId")
-    List<Part> findByTestDetailId(Long testDetailId);
-
+    List<Part> findAllByTestId(Long testId);
+    void deleteByTest_Id(Long testId);
 }

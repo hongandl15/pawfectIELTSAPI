@@ -23,7 +23,6 @@ public class Test {
     @JoinColumn(name = "set_id")
     private Set set;
 
-
     @ManyToOne
     @JoinColumn(name = "skill_id")
     private Skill skill;

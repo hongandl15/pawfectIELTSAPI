@@ -1,32 +1,70 @@
 package com.pawfectielts.controller;
 
-
-import com.pawfectielts.entity.Topic;
+import com.pawfectielts.dto.ChangePasswordRequest;
 import com.pawfectielts.entity.User;
-import com.pawfectielts.service.UserService;
-import com.pawfectielts.service.impl.TopicServiceImplement;
+import com.pawfectielts.repositories.UserRepository;
 import com.pawfectielts.service.impl.UserServiceImplement;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-//@CrossOrigin(origins = "*")
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserServiceImplement userServiceImplement;
+    @Autowired
+    private UserServiceImplement userServiceImplement;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
-    public UserController(UserServiceImplement userServiceImplement) {
-        this.userServiceImplement = userServiceImplement;
+    @PostMapping("/register")
+    public String registerUser(@RequestBody User user) {
+        // Set the creation date
+        user.setCreate_at(new Date());
+        user.setRole("USER");
+
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
+
+        // You might want to perform additional validation and checks here before saving the user
+        User savedUser = userServiceImplement.register(user);
+
+        if (savedUser != null) {
+            return "User registered successfully!";
+        } else {
+            return "User registration failed.";
+        }
     }
-    @GetMapping("/get/{id}")
-    public ResponseEntity<User> getUser(Long id) {
-        User response = userServiceImplement.getUserById(id);
-        return ResponseEntity.ok().body(response);
+
+    @PutMapping("/change-password/{userId}")
+    public String changePassword(
+            @PathVariable Long userId,
+            @RequestBody ChangePasswordRequest changePasswordRequest) {
+
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (user == null) {
+            return "User not found.";
+        }
+
+        // Check if the provided current password matches the stored hashed password
+        if (!passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), user.getPassword())) {
+            return "Current password is incorrect.";
+        }
+
+        // Hash the new password and update the user's password
+        String hashedNewPassword = passwordEncoder.encode(changePasswordRequest.getNewPassword());
+        user.setPassword(hashedNewPassword);
+        userRepository.save(user);
+
+        return "Password changed successfully.";
     }
+
 }

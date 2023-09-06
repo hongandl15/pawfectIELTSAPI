@@ -3,13 +3,13 @@ package com.pawfectielts.service;
 import com.pawfectielts.dto.AnswerDTO;
 import com.pawfectielts.dto.UserAnswerDTO;
 import com.pawfectielts.entity.TestResult;
-import com.pawfectielts.entity.TestResultDTO;
+import com.pawfectielts.dto.TestResultDTO;
 import com.pawfectielts.entity.UserAnswer;
 
 import java.util.ArrayList;
 
 public interface TestResultService {
-    TestResult checkResult(Long testId, AnswerDTO answerDTO);
+    TestResult checkResult(Long testId, AnswerDTO answerDTO, Long userId);
     UserAnswer addUserAnwser(Long testResultId, UserAnswer userAnswer);
     TestResultDTO getTestResultDTO(Long testResultId);
     ArrayList<UserAnswerDTO> getAllUserAnswerByTestResult(Long testResultId);

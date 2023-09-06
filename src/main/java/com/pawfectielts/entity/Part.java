@@ -18,19 +18,23 @@ public class Part {
     @Column(name = "part_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "testDetail_id")
-    private TestDetail testDetail;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "test_id")
+    private Test test;
 
     @ManyToOne
     @JoinColumn(name = "topic_id")
     private Topic topic;
+
 
     @Column(name = "part_order")
     private int order;
 
     @Column(name = "content", length = 25000)
     private String content;
+
+    @Column(name = "audio_file", length = 25000)
+    private String audioFile;
 
     // Getters and setters
 }

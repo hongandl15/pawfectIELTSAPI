@@ -21,6 +21,7 @@ public class TestResult {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
     private double score;
     private int rightAnswer;
     private int wrongAnswer;
@@ -31,6 +32,7 @@ public class TestResult {
     private Test test;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date create_at;
+    @Column(name = "create_at")
+    private Date create;
 
 }

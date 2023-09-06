@@ -27,5 +27,4 @@ public class AnswerController {
     }
 //    @CrossOrigin(origins = "http://localhost:3000")
 
-
 }

@@ -1,14 +1,9 @@
 package com.pawfectielts.service.impl;
 
 import com.pawfectielts.dto.AnswerDTO;
-import com.pawfectielts.dto.QuestionDTO;
-import com.pawfectielts.dto.UserAnswerDTO;
 import com.pawfectielts.entity.*;
-import com.pawfectielts.entity.TestResultDTO;
 import com.pawfectielts.repositories.AnswerRepository;
 import com.pawfectielts.repositories.TestRepository;
-import com.pawfectielts.repositories.TestResultRepository;
-import com.pawfectielts.repositories.UserAnswerRepository;
 import com.pawfectielts.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +16,33 @@ import java.util.Optional;
 public class AnswerServiceImplement implements AnswerService {
     @Autowired
     private AnswerRepository answerRepository;
+
+    @Autowired
+    private TestRepository testRepository ;
     @Override
     public List<Answer> findAllAnswerByTestId(Long TestID) {
         return answerRepository.findAllByTestId(TestID);
     }
 
+    @Override
+    public AnswerDTO createNewAnswerList(AnswerDTO answerDTO, Long testid) {
+        int order = 1;
+        for (String answer : answerDTO.getAnswer()) {
+            Answer newanswer = new Answer();
+            newanswer.setCorrectAnswer(answer);
+            newanswer.setOrder(order);
+            newanswer.setTest(testRepository.findById(testid).orElse(null));
+        }
+        return answerDTO;
+    }
 
+    @Override
+    public String createNewAnswer(String answer, int order, Long testid) {
+            Answer newanswer = new Answer();
+            newanswer.setCorrectAnswer(answer);
+            newanswer.setOrder(order);
+            newanswer.setTest(testRepository.findById(testid).orElse(null));
+            answerRepository.save(newanswer);
+        return answer;
+    }
 }

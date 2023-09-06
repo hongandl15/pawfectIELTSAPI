@@ -8,5 +8,6 @@ import lombok.Setter;
 public class UserAnswerDTO {
     private int orderNumber;
     private boolean correct;
+    private String correctAnswer;
     private String answer;
 }

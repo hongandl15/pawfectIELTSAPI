@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     List<Question> findAllByPartId(Long partId);
     Optional<Question> findById(Long id);
+
+    void deleteByPart_Id(Long partId);
 }
