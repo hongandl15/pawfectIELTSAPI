@@ -22,7 +22,7 @@ public class PartServiceImplement implements PartService {
 
     @Override
     public List<PartDTO> convertToDTO(Long testId) {
-        List<Part> listPart =partRepository.findAllByTestId(testId);
+        List<Part> listPart =partRepository.findAllByTestIdOrderByOrderAsc(testId);
         return listPart.stream()
                 .map(partEntity  -> modelMapper.map(partEntity , PartDTO.class))
                 .collect(Collectors.toList());

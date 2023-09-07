@@ -11,5 +11,6 @@ import java.util.List;
 @Repository
 public interface PartRepository extends JpaRepository<Part, Long> {
     List<Part> findAllByTestId(Long testId);
+    List<Part> findAllByTestIdOrderByOrderAsc(Long testId);
     void deleteByTest_Id(Long testId);
 }

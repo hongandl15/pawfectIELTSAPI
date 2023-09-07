@@ -17,7 +17,6 @@ import java.util.List;
 public class AdminController {
     private final AdminServiceImplement adminServiceImplement;
     private final SetRepository setRepository;
-
     public AdminController(AdminServiceImplement adminServiceImplement, SetRepository setRepository) {
         this.adminServiceImplement = adminServiceImplement;
         this.setRepository = setRepository;
@@ -46,6 +45,5 @@ public class AdminController {
         String response = adminServiceImplement.deleteTest(testid);
         return ResponseEntity.ok().body(response);
     }
-
 
 }
