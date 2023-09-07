@@ -34,7 +34,6 @@ public class OpenAIService {
     @Autowired
     private String API_KEY; // Replace with your actual OpenAI API key
     private RestTemplate restTemplate;
-
     @Autowired
     private ModelMapper modelMapper;
     @Autowired
@@ -55,12 +54,19 @@ public class OpenAIService {
 
     public OpenAiResponseDTO scoreWritingSpeaking(PassageInputDTO passageInput) {
         // gửi request lên openAI API và nhận response
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + API_KEY);
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<PassageInputDTO> requestEntity = new HttpEntity<>(passageInput, headers);
-        ResponseEntity<OpenAiResponseDTO> response = restTemplate.exchange(BASE_URL, HttpMethod.POST, requestEntity, OpenAiResponseDTO.class);
-        return response.getBody();
+        try{
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Authorization", "Bearer " + API_KEY);
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            HttpEntity<PassageInputDTO> requestEntity = new HttpEntity<>(passageInput, headers);
+            ResponseEntity<OpenAiResponseDTO> response = restTemplate.exchange(BASE_URL, HttpMethod.POST, requestEntity, OpenAiResponseDTO.class);
+            return response.getBody();
+        }
+        catch (Exception e){
+            System.out.println(e.toString());
+            return null;
+        }
+
     }
     public PassageInputDTO convertPassagetoInputDTO(AnswerDTO answerDTO, int order){
         // Lấy passage và convert thành json input của open AI

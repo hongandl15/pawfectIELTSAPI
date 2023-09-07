@@ -8,7 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 public class ListTestRequest {
-    private String TestName;
+    private String testName;
     private List<AddReadingTestRequest> listTest;
     private Long setid;
     private Long skillid;
