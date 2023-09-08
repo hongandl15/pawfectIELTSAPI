@@ -88,6 +88,16 @@ public class AdminServiceImplement implements AdminService {
 
         return testid.toString();
     }
+    public String deleteSet(Long setId) {
+        Set set = setRepository.findById(setId).orElse(null);
+        List<Test> testList = testRepository.findAllTestBySetId(setId);
+        for (Test test: testList) {
+            deleteTest(test.getId());
+        }
+        setRepository.delete(set);
+        return "deleted-set";
+    }
+
 
     @Override
     public String deleteTest(Long testId) {

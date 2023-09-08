@@ -41,8 +41,14 @@ public class AdminController {
     }
 
     @DeleteMapping("/delete/{testid}")
-    public ResponseEntity<String> addSet(@PathVariable Long testid) {
+    public ResponseEntity<String> deleteTest(@PathVariable Long testid) {
         String response = adminServiceImplement.deleteTest(testid);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @DeleteMapping("/deleteset/{setid}")
+    public ResponseEntity<String> deleteSet(@PathVariable Long setid) {
+        String response = adminServiceImplement.deleteSet(setid);
         return ResponseEntity.ok().body(response);
     }
 
