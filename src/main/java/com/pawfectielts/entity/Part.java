@@ -30,7 +30,7 @@ public class Part {
     @Column(name = "part_order")
     private int order;
 
-    @Column(name = "content", length = 25000)
+    @Column(name = "content", length = 2500000)
     private String content;
 
     @Column(name = "audio_file", length = 25000)
